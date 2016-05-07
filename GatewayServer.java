@@ -44,8 +44,8 @@ public class GatewayServer {
 				}	
 				/*Checking two hashes on equals if it's equal open the gate*/
 				if(inputLine.equals(sb.toString())) {
-			    	openGateway();
-			    }		
+                                    openGateway();
+                                }		
 			}catch(NoSuchAlgorithmException ex){
 				System.out.println(ex.getMessage());
 			}
