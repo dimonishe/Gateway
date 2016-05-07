@@ -26,7 +26,7 @@ class ClientGateway{
      * @throws Exception
      */
     private function createSocket(){
-        $this->socket = fsockopen($this->IP, $this->Port, $errno, $errstr, 30);
+        $this->socket = \fsockopen($this->IP, $this->Port, $errno, $errstr, 30);
         if (!$this->socket) {
             throw new Exception("$errstr ($errno)<br />\n");
         }
@@ -54,7 +54,7 @@ class ClientGateway{
     }
 }
 
-static $IP = "10.42.0.22";
+static $IP = "192.168.0.100";
 static $PORT = "4444";
 
 $client = new ClientGateway($IP, $PORT);

@@ -1,6 +1,10 @@
 import gnu.io.*;
 import java.io.*;
 import java.net.*;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Enumeration;
 
 public class GatewayServer {
@@ -22,9 +26,29 @@ public class GatewayServer {
 		String inputLine;
 
 		while((inputLine = in.readLine()) != null) {
-		    if(inputLine.equals("c3bf447eabe632720a3aa1a7ce401274")) {
-		    	openGateway();
-		    }		    
+			try{
+				/*Initialized MD5 object*/
+				MessageDigest md = MessageDigest.getInstance("MD5");
+				/*Got server current time*/
+				long yourmilliseconds = System.currentTimeMillis();
+				/*Format server current time*/
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm"); 
+				/*Created object with formated server current time*/
+				Date resultdate = new Date(yourmilliseconds);
+				/*MD5 hashing*/
+				byte[] digest = md.digest(sdf.format(resultdate).getBytes("UTF-8"));
+				/*Retrieve string from md5 bytes sequence*/
+				StringBuffer sb = new StringBuffer();
+				for (byte b : digest) {
+					sb.append(String.format("%02x", b & 0xff));
+				}	
+				/*Checking two hashes on equals if it's equal open the gate*/
+				if(inputLine.equals(sb.toString())) {
+			    	openGateway();
+			    }		
+			}catch(NoSuchAlgorithmException ex){
+				System.out.println(ex.getMessage());
+			}
 		}
 		
 		out.close();
